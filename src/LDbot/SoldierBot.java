@@ -16,13 +16,19 @@ public strictfp class SoldierBot extends RobotBot{
             }
         }
 
-        // Also try to move randomly.
+        RobotInfo enemyloc[] = rc.senseNearbyRobots(-1, rc.getTeam().opponent());
         Direction dir = directions[rng.nextInt(directions.length)];
-        if (rc.canMove(dir)) {
-            RobotInfo enemyloc[] = rc.senseNearbyRobots();
-            if (enemyloc.length > 0) {
-                rc.move(PathFinder.findPath(rc,enemyloc[rng.nextInt(enemyloc.length)].getLocation()));
-            }else
+
+        if(enemyloc.length > 0){
+            dir = PathFinder.findPath(rc,enemyloc[rng.nextInt(enemyloc.length)].getLocation());
+        }
+
+        if(rc.canMove(dir))
+            rc.move(dir);
+        else{
+            dir = directions[rng.nextInt(directions.length)];
+
+            if(rc.canMove(dir))
                 rc.move(dir);
         }
     }
