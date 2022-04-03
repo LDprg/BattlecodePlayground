@@ -5,8 +5,6 @@ import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
 import battlecode.common.RobotController;
 
-import static LDbot.RobotPlayer.*;
-
 public strictfp class MinerBot extends RobotBot{
     @Override
     public void run(RobotController rc) throws GameActionException {
@@ -29,8 +27,11 @@ public strictfp class MinerBot extends RobotBot{
         // Also try to move randomly.
         Direction dir = directions[rng.nextInt(directions.length)];
         if (rc.canMove(dir)) {
-            rc.move(dir);
-            System.out.println("I moved!");
+            MapLocation leadloc[] = rc.senseNearbyLocationsWithLead(-1);
+            if (leadloc.length > 0) {
+                rc.move(PathFinder.findPath(rc,leadloc[rng.nextInt(leadloc.length)]));
+            }else
+                rc.move(dir);
         }
     }
 }

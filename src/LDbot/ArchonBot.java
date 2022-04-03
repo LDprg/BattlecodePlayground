@@ -5,8 +5,6 @@ import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
 import battlecode.common.RobotType;
 
-import static LDbot.RobotPlayer.*;
-
 public strictfp class ArchonBot extends RobotBot{
     @Override
     public void run(RobotController rc) throws GameActionException {

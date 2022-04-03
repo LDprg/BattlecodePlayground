@@ -2,8 +2,6 @@ package LDbot;
 
 import battlecode.common.*;
 
-import static LDbot.RobotPlayer.*;
-
 public strictfp class SoldierBot extends RobotBot{
     @Override
     public void run(RobotController rc) throws GameActionException {
@@ -21,8 +19,11 @@ public strictfp class SoldierBot extends RobotBot{
         // Also try to move randomly.
         Direction dir = directions[rng.nextInt(directions.length)];
         if (rc.canMove(dir)) {
-            rc.move(dir);
-            System.out.println("I moved!");
+            RobotInfo enemyloc[] = rc.senseNearbyRobots();
+            if (enemyloc.length > 0) {
+                rc.move(PathFinder.findPath(rc,enemyloc[rng.nextInt(enemyloc.length)].getLocation()));
+            }else
+                rc.move(dir);
         }
     }
 }
