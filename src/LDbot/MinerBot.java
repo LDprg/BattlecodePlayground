@@ -24,21 +24,34 @@ public strictfp class MinerBot extends RobotBot{
             }
         }
 
-        MapLocation[] leadloc = rc.senseNearbyLocationsWithLead(-1);
-        Direction dir = directions[rng.nextInt(directions.length)];
+        if(rc.isMovementReady()) {
+            MapLocation[] leadloc = rc.senseNearbyLocationsWithLead(-1);
+            Direction dir = directions[rng.nextInt(directions.length)];
 
-        if(leadloc.length > 0){
-            dir = PathFinder.findPath(rc,leadloc[rng.nextInt(leadloc.length)]);
-        }
+            if (leadloc.length > 0) {
+                rc.setIndicatorString("Sensing Lead");
 
+                int id = 0;
+                int maxLead = 0;
+                for (int i = 0; i < leadloc.length; i++) {
+                    if(rc.senseLead(leadloc[i]) > maxLead){
+                        id = i;
+                        maxLead = rc.senseLead(leadloc[i]);
+                    }
+                }
 
-        if(rc.canMove(dir))
-            rc.move(dir);
-        else{
-            dir = directions[rng.nextInt(directions.length)];
+                dir = PathFinder.findPath(rc, leadloc[rng.nextInt(leadloc.length)]);
+            } else
+                rc.setIndicatorString("Searching Lead");
 
-            if(rc.canMove(dir))
+            if (rc.canMove(dir))
                 rc.move(dir);
+            else {
+                dir = directions[rng.nextInt(directions.length)];
+
+                if (rc.canMove(dir))
+                    rc.move(dir);
+            }
         }
     }
 }

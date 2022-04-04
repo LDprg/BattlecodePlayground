@@ -3,6 +3,7 @@ package LDbot;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
+import battlecode.common.RobotInfo;
 
 import java.util.Random;
 
@@ -33,6 +34,20 @@ public abstract strictfp class RobotBot {
             case SAGE:          return new Sagebot();
         }
         return null;
+    }
+
+    static RobotInfo getMinHealth(RobotInfo list[]) throws  GameActionException{
+        int id = 0;
+        int lowestHealth = Integer.MAX_VALUE;
+
+        for (int i = 0; i < list.length; i++) {
+            if(list[i].getHealth() < lowestHealth){
+                id = i;
+                lowestHealth = list[i].getHealth();
+            }
+        }
+
+        return list[id];
     }
 
     abstract void run(RobotController rc) throws GameActionException;
