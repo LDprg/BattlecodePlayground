@@ -1,9 +1,6 @@
 package LDbot;
 
-import battlecode.common.Direction;
-import battlecode.common.GameActionException;
-import battlecode.common.RobotController;
-import battlecode.common.RobotInfo;
+import battlecode.common.*;
 
 import java.util.Random;
 
@@ -44,6 +41,19 @@ public abstract strictfp class RobotBot {
             if(list[i].getHealth() < lowestHealth){
                 id = i;
                 lowestHealth = list[i].getHealth();
+            }
+        }
+
+        return list[id];
+    }
+
+    static MapLocation getMaxLead(RobotController rc,MapLocation list[]) throws  GameActionException{
+        int id = 0;
+        int maxLead = 0;
+        for (int i = 0; i < list.length; i++) {
+            if(rc.senseLead(list[i]) > maxLead){
+                id = i;
+                maxLead = rc.senseLead(list[i]);
             }
         }
 

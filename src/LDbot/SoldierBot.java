@@ -9,21 +9,20 @@ public strictfp class SoldierBot extends RobotBot{
         int visionRadius = rc.getType().visionRadiusSquared;
         Team opponent = rc.getTeam().opponent();
 
-
         RobotInfo[] enemies = rc.senseNearbyRobots(actionRadius, opponent);
         if (enemies.length > 0) {
             MapLocation toAttack = getMinHealth(enemies).location;
-            if (rc.canAttack(toAttack)) {
+
+            if (rc.canAttack(toAttack))
                 rc.attack(toAttack);
-            }
         }
 
+        enemies = rc.senseNearbyRobots(visionRadius, opponent);
         if(rc.isMovementReady()) {
-            RobotInfo enemyloc[] = rc.senseNearbyRobots(visionRadius, opponent);
             Direction dir = directions[rng.nextInt(directions.length)];
 
-            if (enemyloc.length > 0)
-                dir = PathFinder.findPath(rc,getMinHealth(enemyloc).getLocation());
+            if (enemies.length > 0)
+                dir = PathFinder.findPath(rc,getMinHealth(enemies).getLocation());
 
             if (rc.canMove(dir))
                 rc.move(dir);
