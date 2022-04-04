@@ -1,21 +1,23 @@
-package LDbot.bots;
+package LDbot;
 
+import LDbot.bots.*;
 import battlecode.common.*;
 
 import java.util.Random;
 
-import static LDbot.RobotPlayer.*;
+import static LDbot.util.Communication.getEnemyArchon;
+import static LDbot.util.Communication.setEnemyArchon;
 
 public abstract strictfp class RobotBot {
     /**
      * Random generator
      **/
-    static final Random rng = new Random(6147);
+    public static final Random rng = new Random();//(6147);
 
     /**
      * Array containing all the possible movement directions.
      */
-    static final Direction[] directions = {
+    public static final Direction[] directions = {
             Direction.NORTH,
             Direction.NORTHEAST,
             Direction.EAST,
@@ -26,7 +28,13 @@ public abstract strictfp class RobotBot {
             Direction.NORTHWEST,
     };
 
-    public static RobotBot init(RobotController rc) throws GameActionException {
+    protected static RobotController rc;
+
+    protected Team opponent;
+    protected MapLocation EnemyArchon = null;
+
+    public static RobotBot init(RobotController nrc) throws GameActionException {
+        rc = nrc;
         switch (rc.getType()) {
             case ARCHON:
                 return new ArchonBot();
@@ -46,7 +54,7 @@ public abstract strictfp class RobotBot {
         return null;
     }
 
-    static RobotInfo getMinHealth(RobotInfo[] list) throws GameActionException {
+    protected static RobotInfo getMinHealth(RobotInfo[] list) throws GameActionException {
         int id = 0;
         int lowestHealth = Integer.MAX_VALUE;
 
@@ -60,7 +68,7 @@ public abstract strictfp class RobotBot {
         return list[id];
     }
 
-    static MapLocation getMaxLead(RobotController rc, MapLocation[] list) throws GameActionException {
+    protected static MapLocation getMaxLead(MapLocation[] list) throws GameActionException {
         int id = 0;
         int maxLead = 0;
         for (int i = 0; i < list.length; i++) {
@@ -73,12 +81,19 @@ public abstract strictfp class RobotBot {
         return list[id];
     }
 
-    public void runALL(RobotController rc) throws GameActionException{
-        //if(turnCount > 100 && !rc.getType().isBuilding())
-        //    rc.disintegrate();
+    public void runALL() throws GameActionException {
+        opponent = rc.getTeam().opponent();
+        RobotInfo[] ri = rc.senseNearbyRobots(-1, opponent);
+        for (RobotInfo robot :
+                ri) {
+            if (robot.getType() == RobotType.ARCHON)
+                setEnemyArchon(rc, robot.getLocation());
+        }
 
-        run(rc);
+        EnemyArchon = getEnemyArchon(rc);
+
+        run();
     }
 
-    abstract void run(RobotController rc) throws GameActionException;
+    protected abstract void run() throws GameActionException;
 }

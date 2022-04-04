@@ -1,12 +1,15 @@
 package LDbot.bots;
 
-import battlecode.common.*;
+import LDbot.RobotBot;
+import battlecode.common.GameActionException;
+import battlecode.common.MapLocation;
+import battlecode.common.RobotController;
+import battlecode.common.RobotInfo;
 
 public strictfp class WatchtowerBot extends RobotBot {
     @Override
-    public void run(RobotController rc) throws GameActionException {
+    public void run() throws GameActionException {
         int actionRadius = rc.getType().actionRadiusSquared;
-        Team opponent = rc.getTeam().opponent();
 
         RobotInfo[] enemies = rc.senseNearbyRobots(actionRadius, opponent);
         if (enemies.length > 0) {

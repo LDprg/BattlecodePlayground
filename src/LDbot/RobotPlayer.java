@@ -1,6 +1,5 @@
 package LDbot;
 
-import LDbot.bots.RobotBot;
 import battlecode.common.Clock;
 import battlecode.common.GameActionException;
 import battlecode.common.RobotController;
@@ -34,7 +33,7 @@ public strictfp class RobotPlayer {
         while (true) {
             turnCount += 1;
             try {
-                rb.runALL(rc);
+                rb.runALL();
             } catch (GameActionException e) {
                 System.out.println(rc.getType() + " Exception");
                 e.printStackTrace();
