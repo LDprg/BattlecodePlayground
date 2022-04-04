@@ -1,8 +1,9 @@
-package LDbot;
+package LDbot.bots;
 
+import LDbot.PathFinder;
 import battlecode.common.*;
 
-public strictfp class SoldierBot extends RobotBot{
+public strictfp class SoldierBot extends RobotBot {
     @Override
     public void run(RobotController rc) throws GameActionException {
         int actionRadius = rc.getType().actionRadiusSquared;
@@ -18,11 +19,11 @@ public strictfp class SoldierBot extends RobotBot{
         }
 
         enemies = rc.senseNearbyRobots(visionRadius, opponent);
-        if(rc.isMovementReady()) {
+        if (rc.isMovementReady()) {
             Direction dir = directions[rng.nextInt(directions.length)];
 
             if (enemies.length > 0)
-                dir = PathFinder.findPath(rc,getMinHealth(enemies).getLocation());
+                dir = PathFinder.findPath(rc, getMinHealth(enemies).getLocation());
 
             if (rc.canMove(dir))
                 rc.move(dir);
