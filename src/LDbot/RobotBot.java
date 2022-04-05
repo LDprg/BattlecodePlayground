@@ -3,34 +3,12 @@ package LDbot;
 import LDbot.bots.*;
 import battlecode.common.*;
 
-import java.util.Random;
-
+import static LDbot.util.Cache.opponent;
+import static LDbot.util.Cache.rc;
 import static LDbot.util.Communication.getEnemyArchon;
 import static LDbot.util.Communication.setEnemyArchon;
 
 public abstract strictfp class RobotBot {
-    /**
-     * Random generator
-     **/
-    public static final Random rng = new Random();//(6147);
-
-    /**
-     * Array containing all the possible movement directions.
-     */
-    public static final Direction[] directions = {
-            Direction.NORTH,
-            Direction.NORTHEAST,
-            Direction.EAST,
-            Direction.SOUTHEAST,
-            Direction.SOUTH,
-            Direction.SOUTHWEST,
-            Direction.WEST,
-            Direction.NORTHWEST,
-    };
-
-    protected static RobotController rc;
-
-    protected Team opponent;
     protected MapLocation EnemyArchon = null;
 
     public static RobotBot init(RobotController nrc) throws GameActionException {

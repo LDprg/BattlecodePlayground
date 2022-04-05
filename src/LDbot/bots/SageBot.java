@@ -2,7 +2,12 @@ package LDbot.bots;
 
 import LDbot.RobotBot;
 import LDbot.util.Navigator;
-import battlecode.common.*;
+import battlecode.common.Direction;
+import battlecode.common.GameActionException;
+import battlecode.common.MapLocation;
+import battlecode.common.RobotInfo;
+
+import static LDbot.util.Cache.*;
 
 public strictfp class SageBot extends RobotBot {
     @Override

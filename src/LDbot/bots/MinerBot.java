@@ -4,8 +4,9 @@ import LDbot.RobotBot;
 import LDbot.util.Navigator;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
-import battlecode.common.GameConstants;
 import battlecode.common.MapLocation;
+
+import static LDbot.util.Cache.*;
 
 public strictfp class MinerBot extends RobotBot {
     public int MiningThreshold = 1;

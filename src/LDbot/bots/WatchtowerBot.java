@@ -3,8 +3,10 @@ package LDbot.bots;
 import LDbot.RobotBot;
 import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
-import battlecode.common.RobotController;
 import battlecode.common.RobotInfo;
+
+import static LDbot.util.Cache.opponent;
+import static LDbot.util.Cache.rc;
 
 public strictfp class WatchtowerBot extends RobotBot {
     @Override

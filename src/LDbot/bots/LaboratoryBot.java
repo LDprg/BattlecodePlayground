@@ -2,7 +2,8 @@ package LDbot.bots;
 
 import LDbot.RobotBot;
 import battlecode.common.GameActionException;
-import battlecode.common.RobotController;
+
+import static LDbot.util.Cache.rc;
 
 public strictfp class LaboratoryBot extends RobotBot {
     @Override
