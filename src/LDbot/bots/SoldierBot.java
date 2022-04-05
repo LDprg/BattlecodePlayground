@@ -5,47 +5,41 @@ import LDbot.util.Navigator;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
-import battlecode.common.RobotInfo;
 
 import static LDbot.util.Cache.*;
 import static LDbot.util.Navigator.getRandomDestination;
 
 public strictfp class SoldierBot extends RobotBot {
+    private final MapLocation searchDestination = getRandomDestination();
     private Mode mode = Mode.SEARCH;
-    private final MapLocation searchDestination = getRandomDestination(rc);
 
     @Override
     public void run() throws GameActionException {
-        int actionRadius = rc.getType().actionRadiusSquared;
-        int visionRadius = rc.getType().visionRadiusSquared;
-
         rc.setIndicatorString("Mode: " + mode.toString());
 
-        RobotInfo[] enemies = rc.senseNearbyRobots(actionRadius, opponent);
-        if (enemies.length > 0) {
-            MapLocation toAttack = getMinHealth(enemies).location;
+        if (enemyRobots.length > 0) {
+            MapLocation toAttack = getMinHealth(enemyRobots).location;
 
             if (rc.canAttack(toAttack))
                 rc.attack(toAttack);
         }
 
-        if (EnemyArchon != null || rc.getLocation().isWithinDistanceSquared(searchDestination, 10))
+        if (robotLocation.isWithinDistanceSquared(searchDestination, 10))
             mode = Mode.ENGAGE;
 
-        enemies = rc.senseNearbyRobots(visionRadius, opponent);
         if (rc.isMovementReady() && mode == Mode.ENGAGE) {
-            Direction dir = directions[rng.nextInt(directions.length)];
+            Direction dir = getRndDir();
 
-            if (enemies.length > 0)
-                dir = Navigator.findPath(rc, getMinHealth(enemies).getLocation());
+            if (enemyRobotsVisible.length > 0)
+                dir = Navigator.findPath(getMinHealth(enemyRobotsVisible).getLocation());
 
             if (EnemyArchon != null)
-                dir = Navigator.findPath(rc, EnemyArchon);
+                dir = Navigator.findPath(EnemyArchon);
 
             if (rc.canMove(dir))
                 rc.move(dir);
         } else if (rc.isMovementReady() && mode == Mode.SEARCH) {
-            Direction dir = Navigator.findPath(rc, searchDestination);
+            Direction dir = Navigator.findPath(searchDestination);
             if (rc.canMove(dir))
                 rc.move(dir);
         }

@@ -3,8 +3,7 @@ package LDbot;
 import LDbot.bots.*;
 import battlecode.common.*;
 
-import static LDbot.util.Cache.opponent;
-import static LDbot.util.Cache.rc;
+import static LDbot.util.Cache.*;
 import static LDbot.util.Communication.getEnemyArchon;
 import static LDbot.util.Communication.setEnemyArchon;
 
@@ -13,6 +12,10 @@ public abstract strictfp class RobotBot {
 
     public static RobotBot init(RobotController nrc) throws GameActionException {
         rc = nrc;
+        me = rc.getTeam();
+        opponent = rc.getTeam().opponent();
+        robotType = rc.getType();
+
         switch (rc.getType()) {
             case ARCHON:
                 return new ArchonBot();
@@ -59,16 +62,25 @@ public abstract strictfp class RobotBot {
         return list[id];
     }
 
+    public static Direction getRndDir() {
+        return directions[rng.nextInt(directions.length)];
+    }
+
     public void runALL() throws GameActionException {
-        opponent = rc.getTeam().opponent();
-        RobotInfo[] ri = rc.senseNearbyRobots(-1, opponent);
+        friendlyRobotsVisible = rc.senseNearbyRobots(robotType.visionRadiusSquared, me);
+        enemyRobotsVisible = rc.senseNearbyRobots(robotType.visionRadiusSquared, opponent);
+        friendlyRobots = rc.senseNearbyRobots(robotType.actionRadiusSquared, me);
+        enemyRobots = rc.senseNearbyRobots(robotType.actionRadiusSquared, opponent);
+
+        robotLocation = rc.getLocation();
+
         for (RobotInfo robot :
-                ri) {
+                enemyRobotsVisible) {
             if (robot.getType() == RobotType.ARCHON)
-                setEnemyArchon(rc, robot.getLocation());
+                setEnemyArchon(rc, robot.getLocation(), 0);
         }
 
-        EnemyArchon = getEnemyArchon(rc);
+        EnemyArchon = getEnemyArchon(rc, 0);
 
         run();
     }

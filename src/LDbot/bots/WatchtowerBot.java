@@ -3,19 +3,15 @@ package LDbot.bots;
 import LDbot.RobotBot;
 import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
-import battlecode.common.RobotInfo;
 
-import static LDbot.util.Cache.opponent;
+import static LDbot.util.Cache.enemyRobots;
 import static LDbot.util.Cache.rc;
 
 public strictfp class WatchtowerBot extends RobotBot {
     @Override
     public void run() throws GameActionException {
-        int actionRadius = rc.getType().actionRadiusSquared;
-
-        RobotInfo[] enemies = rc.senseNearbyRobots(actionRadius, opponent);
-        if (enemies.length > 0) {
-            MapLocation toAttack = getMinHealth(enemies).location;
+        if (enemyRobots.length > 0) {
+            MapLocation toAttack = getMinHealth(enemyRobots).location;
 
             rc.setIndicatorString("Trying to attack");
 

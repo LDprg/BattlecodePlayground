@@ -1,8 +1,6 @@
 package LDbot.util;
 
-import battlecode.common.Direction;
-import battlecode.common.RobotController;
-import battlecode.common.Team;
+import battlecode.common.*;
 
 import java.util.Random;
 
@@ -21,5 +19,14 @@ public class Cache {
     public static RobotController rc;
     public static Team me;
     public static Team opponent;
+    public static RobotType robotType;
+
     public static int turnCount = 0;
+
+    public static RobotInfo[] friendlyRobotsVisible;
+    public static RobotInfo[] enemyRobotsVisible;
+    public static RobotInfo[] friendlyRobots;
+    public static RobotInfo[] enemyRobots;
+
+    public static MapLocation robotLocation;
 }

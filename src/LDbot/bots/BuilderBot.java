@@ -12,12 +12,11 @@ import static LDbot.util.Cache.*;
 public strictfp class BuilderBot extends RobotBot {
     @Override
     public void run() throws GameActionException {
-        RobotInfo[] friendly = rc.senseNearbyRobots(-1, rc.getTeam());
         Direction dir = directions[rng.nextInt(directions.length)];
 
         int buildingCount = 0;
         for (RobotInfo ri :
-                friendly) {
+                friendlyRobots) {
             if (ri.getType().isBuilding())
                 ++buildingCount;
         }
@@ -25,13 +24,13 @@ public strictfp class BuilderBot extends RobotBot {
         RobotInfo repair = null;
 
         for (RobotInfo ri :
-                friendly) {
+                friendlyRobots) {
             if (ri.getType().isBuilding() && ri.getHealth() < ri.getType().getMaxHealth(ri.getLevel())) {
-                if (rc.getLocation().isAdjacentTo(ri.getLocation()))
+                if (robotLocation.isAdjacentTo(ri.getLocation()))
                     repair = ri;
                 else {
-                    if (rc.isMovementReady() && rc.canMove(Navigator.findPath(rc, ri.getLocation())))
-                        rc.move(Navigator.findPath(rc, ri.getLocation()));
+                    if (rc.isMovementReady() && rc.canMove(Navigator.findPath(ri.getLocation())))
+                        rc.move(Navigator.findPath(ri.getLocation()));
                 }
             }
         }

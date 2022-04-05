@@ -21,7 +21,6 @@ public strictfp class ArchonBot extends RobotBot {
 
     @Override
     public void run() throws GameActionException {
-        // Pick a direction to build in.
         Direction dir = directions[rng.nextInt(directions.length)];
 
         rc.setIndicatorString("Trying to build a " + Types[count].toString());
@@ -33,10 +32,8 @@ public strictfp class ArchonBot extends RobotBot {
         if (count >= Types.length)
             count = 0;
 
-        RobotInfo[] ri = rc.senseNearbyRobots(-1, rc.getTeam());
-
         for (RobotInfo robot :
-                ri) {
+                friendlyRobots) {
             if (robot.getHealth() < robot.getType().getMaxHealth(1) && rc.canRepair(robot.getLocation()))
                 rc.repair(robot.getLocation());
         }

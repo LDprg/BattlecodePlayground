@@ -5,30 +5,27 @@ import LDbot.util.Navigator;
 import battlecode.common.Direction;
 import battlecode.common.GameActionException;
 import battlecode.common.MapLocation;
-import battlecode.common.RobotInfo;
 
 import static LDbot.util.Cache.*;
 
 public strictfp class SageBot extends RobotBot {
     @Override
     public void run() throws GameActionException {
-        int actionRadius = rc.getType().actionRadiusSquared;
-        int visionRadius = rc.getType().visionRadiusSquared;
-
-        RobotInfo[] enemies = rc.senseNearbyRobots(actionRadius, opponent);
-        if (enemies.length > 0) {
-            MapLocation toAttack = getMinHealth(enemies).location;
+        if (enemyRobots.length > 0) {
+            MapLocation toAttack = getMinHealth(enemyRobots).location;
 
             if (rc.canAttack(toAttack))
                 rc.attack(toAttack);
         }
 
-        enemies = rc.senseNearbyRobots(visionRadius, opponent);
         if (rc.isMovementReady()) {
-            Direction dir = directions[rng.nextInt(directions.length)];
+            Direction dir = getRndDir();
 
-            if (enemies.length > 0)
-                dir = Navigator.findPath(rc, getMinHealth(enemies).getLocation());
+            if (enemyRobotsVisible.length > 0)
+                dir = Navigator.findPath(getMinHealth(enemyRobotsVisible).getLocation());
+
+            if (EnemyArchon != null)
+                dir = Navigator.findPath(EnemyArchon);
 
             if (rc.canMove(dir))
                 rc.move(dir);
